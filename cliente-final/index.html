@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Teodoro's - Cliente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <img src="img/logo.jpg" alt="Logo Barbearia Teodoro's" class="logo">
+  </header>
+
+  <main>
+    <h1>Seja Bem-Vindo</h1>
+    <p id="saudacao" class="saudacao"></p>
+    <!-- SERVIÇOS (cards com imagem) -->
+<section class="servicos">
+  <h2>Escolha um serviço</h2>
+
+  <div class="servicos-grid" id="servicos-grid">
+    <button class="svc-card" data-servico="Corte">
+      <img src="img/servicos/corte.jpg" alt="Corte">
+      <span>CORTE</span>
+    </button>
+
+    <button class="svc-card" data-servico="Barba">
+      <img src="img/servicos/barba.jpg" alt="Barba">
+      <span>BARBA</span>
+    </button>
+
+    <button class="svc-card" data-servico="Pezinho">
+      <img src="img/servicos/pezinho.jpg" alt="Pezinho">
+      <span>PEZINHO</span>
+    </button>
+
+    <button class="svc-card" data-servico="Sobrancelha">
+      <img src="img/servicos/sobrancelha.jpg" alt="Sobrancelha">
+      <span>SOBRANCELHA</span>
+    </button>
+
+    <button class="svc-card" data-servico="Tintura">
+      <img src="img/servicos/tintura.jpg" alt="Tintura">
+      <span>TINTURA</span>
+    </button>
+  </div>
+</section>
+
+    <h2>🗓️ Agende seu horário</h2>
+
+    <div class="navegacao-mes">
+      <button id="anterior">⬅️ Mês Anterior</button>
+      <span id="mes-atual"></span>
+      <button id="proximo">Próximo Mês ➡️</button>
+    </div>
+
+    <div class="grid-dias" id="calendario-mensal"></div>
+    <h2 id="dia-selecionado">Selecione um dia</h2>
+    <ul id="horarios-disponiveis"></ul>
+  </main>
+
+  <!-- Modal de Agendamento -->
+  <div id="modal-agendar" class="modal" hidden>
+    <div class="modal-card">
+      <h3>Novo agendamento</h3>
+      <form id="form-agendar">
+        <div class="field">
+          <label for="ag-nome">Nome completo</label>
+          <input id="ag-nome" type="text" placeholder="Ex: João da Silva" required>
+        </div>
+
+        <div class="field">
+          <label for="ag-telefone">Telefone</label>
+          <input id="ag-telefone" type="tel" inputmode="numeric" autocomplete="tel"
+                 placeholder="(27) 99999-9999" maxlength="15" required />
+          <small class="hint">Digite somente números (10 ou 11).</small>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="ag-cancelar" class="btn btn-sec">Cancelar</button>
+          <button type="submit" id="ag-salvar" class="btn btn-primary">Agendar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Sucesso -->
+  <div id="modal-sucesso" class="modal" hidden>
+    <div class="modal-card">
+      <h3>Agendamento confirmado 🎉</h3>
+      <p id="conf-resumo" class="hint" style="margin-top:8px;"></p>
+      <div class="actions" style="margin-top:12px;">
+        <a id="btn-ics" class="btn btn-primary" download="agendamento-teodoros.ics">Adicionar ao calendário</a>
+        <a id="btn-whats" class="btn" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+        <button type="button" id="ok-sucesso" class="btn btn-sec">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toast-container"></div>
+
+  <script src="script.js"></script>
+
+  <footer class="rodape">
+    © 2025 Barbearia Teodoro's. Todos os direitos reservados.
+  </footer>
+</body>
+</html>

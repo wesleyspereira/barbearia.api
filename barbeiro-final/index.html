@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teodoro's - Barbeiro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <img src="img/logo.jpg" alt="Logo Barbearia Teodoro's" class="logo" />
+  </header>
+
+  <main>
+    <h1>Painel do Barbeiro</h1>
+    <h2>Olá Amaury</h2>
+
+    <!-- Abas -->
+    <nav class="menu">
+      <button class="menu-btn active" data-section="agenda">📅 Agenda</button>
+      <button class="menu-btn" data-section="historico">📜 Histórico</button>
+    </nav>
+
+    <!-- AGENDA -->
+    <section id="agenda" class="secao ativa">
+      <h2>🗓️Agenda Mensal</h2>
+
+      <div class="mes-navegacao">
+        <button id="mes-anterior">⬅️ Mês Anterior</button>
+        <span id="mes-atual">Mês de AAAA</span>
+        <button id="proximo-mes">Próximo Mês ➡️</button>
+      </div>
+
+      <div class="grid-dias" id="calendario-mensal"></div>
+
+      <h3 id="dia-selecionado">Selecione um dia</h3>
+      <!-- Toolbar do dia -->
+      <div class="dia-actions" style="display:flex;gap:8px;align-items:center;margin:6px 0 10px">
+        <button id="btn-bloquear-dia" disabled>🚫 Bloquear dia</button>
+        <button id="btn-desbloquear-dia" disabled>♻️ Desbloquear dia</button>
+        <span id="status-dia" class="muted" style="margin-left:6px"></span>
+      </div>
+      <ul id="lista-agendamentos"></ul>
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section id="historico" class="secao">
+      <h2>Histórico</h2>
+
+      <div class="hist-toolbar">
+        <label>Filtro:
+          <select id="hist-filter">
+            <option value="tudo">Tudo</option>
+            <option value="finalizado">Somente finalizados</option>
+            <option value="agendado">Somente agendados</option>
+            <option value="cancelado">Somente cancelados</option>
+          </select>
+        </label>
+        <div class="hist-actions">
+          <button id="hist-clear-selected">Limpar selecionados</button>
+          <button id="hist-clear-all">Limpar tudo</button>
+        </div>
+      </div>
+
+      <div id="hist-grouped"></div>
+    </section>
+  </main>
+
+  <!-- MODAL REAGENDAR -->
+  <div id="modal-reagendar" hidden>
+    <div class="modal-card">
+      <h3>Reagendar</h3>
+      <p id="reag-info"></p>
+      <div class="row">
+        <label>Data:
+          <input type="date" id="reag-data" />
+        </label>
+      </div>
+      <div class="row">
+        <label>Hora:
+          <select id="reag-hora"></select>
+        </label>
+      </div>
+      <div class="actions">
+        <button id="reag-cancelar">Cancelar</button>
+        <button id="reag-salvar">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=13"></script>
+</body>
+
+</html>

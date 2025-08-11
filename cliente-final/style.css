@@ -1,0 +1,366 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('img/fundo.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  padding: 10px;
+  background: rgba(0,0,0,0.7);
+}
+
+.logo {
+  max-width: 150px;
+}
+
+main {
+  padding: 20px;
+  background: rgba(0,0,0,0.6);
+  text-align: center;
+}
+
+.menu {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.menu-btn {
+  background: #333;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.menu-btn.active {
+  background: #10b981;
+}
+
+.grid-dias {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.grid-dias button {
+  background: #444;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.grid-dias button:hover {
+  background: #10b981;
+  transform: scale(1.05);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  background: #2c2c2c;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+ul li:hover {
+  background: #3a3a3a;
+  transform: translateX(5px);
+}
+
+.saudacao {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #f9fcfc;
+}
+
+.rodape {
+  text-align: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ccc;
+  font-size: 14px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  margin-top: 40px;
+  border-top: 1px solid #444;
+}
+
+.agendar {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.agendar:hover {
+  background-color: #0e9e6e;
+}
+
+.cancelar {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cancelar:hover {
+  background-color: #c72b37;
+}
+
+/* RESPONSIVO PARA MOBILE */
+/* MELHORIA PARA MOBILE */
+@media (max-width: 768px) {
+  .grid-dias {
+    grid-template-columns: repeat(2, 1fr); /* reduz para 2 por linha */
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .grid-dias button { 
+    white-space: pre-line; 
+    font-size: 16px;
+    padding: 14px;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .menu-btn {
+    width: 90%;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  ul li {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .agendar, .cancelar {
+    font-size: 16px;
+    padding: 10px 16px;
+    border-radius: 6px;
+  }
+
+  h1, h2 {
+    font-size: 22px;
+  }
+
+  .saudacao {
+    font-size: 18px;
+  }
+
+  .logo {
+    max-width: 100px;
+  }
+}
+
+.grid-dias button.selecionado {
+  background-color: #10b981;
+  transform: scale(1.05);
+  border: 2px solid #fff;
+}
+
+.grid-dias button.dia-passado {
+  background-color: #b91c1c;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.navegacao-mes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+.navegacao-mes button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#mes-atual {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ===== Garantir que hidden esconda o modal ===== */
+[hidden]{ display:none !important; }
+
+/* ===== Modal (adicionado) ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+}
+.modal-card {
+  width: min(420px, 92vw);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.5);
+}
+.field { margin: 10px 0; text-align: left; }
+.field label { display:block; font-size:14px; margin-bottom:6px; }
+.field input {
+  width:100%; padding:10px 12px; border-radius:8px;
+  border:1px solid #555; background:#222; color:#fff;
+}
+.hint { color:#c9c9c9; font-size:12px; }
+.actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; }
+.btn {
+  background:#333; color:#fff; border:1px solid #555;
+  padding:8px 12px; border-radius:8px; cursor:pointer;
+}
+.btn:hover { filter:brightness(1.06); }
+.btn-sec{ background:#2f2f2f; }
+.btn-primary{ background:#10b981; border-color:#0e9e6e; color:#08241b; }
+
+/* ===== Toasts (adicionado) ===== */
+#toast-container{ position:fixed; right:16px; bottom:16px; display:grid; gap:8px; z-index:10000; }
+.toast{
+  padding:10px 12px; border-radius:10px; color:#111; background:#e2ffe9;
+  border:1px solid #7dd3a7; min-width:220px; max-width:72vw;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.toast.error{ background:#ffe2e2; border-color:#ff9c9c; }
+.toast.warn{ background:#fff5e2; border-color:#ffd18b; }
+/* === Cards de Serviços === */
+.servicos { margin: 12px 0 18px; }
+.servicos > h2 { margin: 0 0 10px; font-size: 1.2rem; font-weight: 700; }
+
+.servicos-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.svc-card{
+  position: relative;
+  border: none;
+  padding: 0;
+  background: #1f1f1f;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  outline: none;
+}
+
+.svc-card img{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(.9);
+}
+
+.svc-card span{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.78);
+  padding: 14px 16px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.svc-card:hover{ transform: translateY(-2px); }
+.svc-card.active{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(16,185,129,.35);
+}
+.svc-card:focus-visible{
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+/* === Cards de Serviços === */
+.servicos { margin: 12px 0 18px; }
+.servicos > h2 { margin: 0 0 10px; font-size: 1.2rem; font-weight: 700; }
+
+.servicos-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.svc-card{
+  position: relative;
+  border: none;
+  padding: 0;
+  background: #1f1f1f;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  outline: none;
+  color: #fff;
+}
+
+.svc-card img{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(.9);
+}
+
+.svc-card span{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.78);
+  padding: 14px 16px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.svc-card:hover{ transform: translateY(-2px); }
+.svc-card.active{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(16,185,129,.35);
+}
+.svc-card:focus-visible{
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
