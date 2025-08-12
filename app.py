@@ -1,12 +1,16 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+# app.py
+import os
 import sqlite3
 from datetime import datetime, timedelta
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-DB_NAME = "barbearia.db"
+# Caminho ABSOLUTO para o SQLite (evita "arquivo não encontrado" em produção)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_NAME = os.path.join(BASE_DIR, "barbearia.db")
 
 # ---------- Utils ----------
 def formatar_telefone(numero: str) -> str:
@@ -18,20 +22,25 @@ def formatar_telefone(numero: str) -> str:
     return numero or ""
 
 def normalizar_data(txt: str) -> str | None:
-    if not txt: return None
+    if not txt:
+        return None
     raw = txt.strip().lower()
     if raw == "hoje":
         return datetime.today().strftime("%Y-%m-%d")
-    if raw in ("amanha","amanhã"):
-        return (datetime.today()+timedelta(days=1)).strftime("%Y-%m-%d")
-    if raw.isdigit() and len(raw)==8:
-        for fmt in ("%d%m%Y","%Y%m%d"):
-            try: return datetime.strptime(raw, fmt).strftime("%Y-%m-%d")
-            except ValueError: pass
+    if raw in ("amanha", "amanhã"):
+        return (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+    if raw.isdigit() and len(raw) == 8:
+        for fmt in ("%d%m%Y", "%Y%m%d"):
+            try:
+                return datetime.strptime(raw, fmt).strftime("%Y-%m-%d")
+            except ValueError:
+                pass
         return None
-    for fmt in ("%Y-%m-%d","%d/%m/%Y","%d-%m-%Y","%d.%m.%Y","%Y/%m/%d","%Y.%m.%d"):
-        try: return datetime.strptime(raw, fmt).strftime("%Y-%m-%d")
-        except ValueError: pass
+    for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", "%Y/%m/%d", "%Y.%m.%d"):
+        try:
+            return datetime.strptime(raw, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            pass
     return None
 
 def data_eh_passada(data_iso: str) -> bool:
@@ -62,7 +71,8 @@ def criar_tabelas():
       servico TEXT,
       status TEXT DEFAULT 'agendado',
       criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )""")
+    )
+    """)
     # Migração: adiciona 'servico' se faltar
     cur.execute("PRAGMA table_info(agendamentos)")
     cols = {r["name"] for r in cur.fetchall()}
@@ -82,7 +92,8 @@ def criar_tabelas():
       dia TEXT PRIMARY KEY,
       motivo TEXT,
       criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )""")
+    )
+    """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_blk_dia ON bloqueios(dia)")
     c.commit(); c.close()
 
@@ -144,7 +155,8 @@ def listar_agendamentos():
         where.append("status = ?"); params.append(status_q)
 
     sql = "SELECT * FROM agendamentos"
-    if where: sql += " WHERE " + " AND ".join(where)
+    if where:
+        sql += " WHERE " + " AND ".join(where)
     sql += """ ORDER BY
         CASE status WHEN 'bloqueado' THEN 0 WHEN 'agendado' THEN 1
                     WHEN 'finalizado' THEN 2 WHEN 'cancelado' THEN 3 ELSE 4 END,
@@ -234,7 +246,8 @@ def criar_bloqueio():
     body = request.get_json(force=True, silent=True) or {}
     dia = normalizar_data(body.get("dia") or "")
     motivo = (body.get("motivo") or "").strip() or None
-    if not dia: return jsonify(error="Dia inválido."), 400
+    if not dia:
+        return jsonify(error="Dia inválido."), 400
     try:
         c = conn(); cur = c.cursor()
         cur.execute("INSERT INTO bloqueios (dia, motivo) VALUES (?,?)", (dia, motivo))
@@ -246,7 +259,8 @@ def criar_bloqueio():
 @app.delete("/bloqueios/<dia>")
 def remover_bloqueio(dia):
     dia_iso = normalizar_data(dia)
-    if not dia_iso: return jsonify(error="Dia inválido."), 400
+    if not dia_iso:
+        return jsonify(error="Dia inválido."), 400
     c = conn(); cur = c.cursor()
     cur.execute("DELETE FROM bloqueios WHERE dia = ?", (dia_iso,))
     if cur.rowcount == 0:
@@ -317,7 +331,13 @@ def deletar_agendamentos():
 def root():
     return "API Barbearia OK (serviço habilitado)"
 
+# ✅ garante tabelas tanto em dev quanto em produção
+criar_tabelas()
+
 if __name__ == "__main__":
-    criar_tabelas()
+    # Servidor de produção local (também funciona em dev)
+    from waitress import serve
     print("Rotas carregadas:", app.url_map)
-    app.run(debug=True, port=5000, use_reloader=False)
+    serve(app, host="0.0.0.0", port=5000)
+    # Se preferir debug do Flask:
+    # app.run(debug=True, port=5000)
