@@ -1,6 +1,6 @@
 // CLIENTE — calendário + serviços + modal + máscara + confirmação (ICS + WhatsApp)
 document.addEventListener("DOMContentLoaded", () => {
-  const API = "http://localhost:5000";
+  const API = "https://barbearia-api-fbmf.onrender.com";
   const SHOP_WHATS = "5527998099941"; // 55 + DDD + número
 
   const $ = (id) => document.getElementById(id);
