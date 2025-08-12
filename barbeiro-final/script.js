@@ -5,7 +5,7 @@
 // - Histórico com filtros, remover 1/selecionados/todos cancelados
 // - Reagendar com checagem de conflitos
 document.addEventListener("DOMContentLoaded", () => {
-  const API = "http://localhost:5000";
+  const API = "https://barbearia-api-fbmf.onrender.com";
 
   // ---- ELEMENTOS ----
   const calendario = document.getElementById("calendario-mensal");
